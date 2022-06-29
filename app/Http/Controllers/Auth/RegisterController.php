@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Utilities\FileUploader;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -50,9 +51,11 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'first_name' => ['bail', 'required', 'string', 'max:191'],
+            'last_name' => ['bail', 'required', 'string', 'max:191'],
+            'photo' => ['bail', 'required', 'mimes:jpg,jpeg,png,gif,webp', 'max:1000'],
+            'email' => ['bail', 'required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['bail', 'required', 'string', 'min:8', 'confirmed'],
         ]);
     }
 
@@ -64,10 +67,17 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
+        $photo = FileUploader::upload('photo', 'uploads/students');
+        $user = User::create([
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
             'email' => $data['email'],
+            'photo' => $photo,
             'password' => Hash::make($data['password']),
         ]);
+
+        $user->registration_no = formatId($user->id);
+
+        return $user;
     }
 }

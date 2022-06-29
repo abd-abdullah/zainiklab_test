@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
@@ -17,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'user_type', 'email', 'password', 'image', 'registration_no', 'status'
+        'first_name', 'last_name', 'user_type', 'email', 'password', 'photo', 'email_verified_at', 'registration_no', 'status'
     ];
 
     /**
@@ -37,4 +38,38 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * get the user full name.
+     *
+     * @var array
+     */
+    public function getNameAttribute()
+    {
+        return $this->first_name.' '.$this->last_name;
+    }
+
+    /**
+     * get the user profile photo.
+     *
+     * @var array
+     */
+    public function getProfilePhotoAttribute()
+    {
+        if (Storage::exists($this->photo)) {
+            return $this->photo;
+        }
+
+        return 'https://ui-avatars.com/api/?name='.$this->name.'&background=random';
+    }
+
+    /**
+     * The course that belong to the student.
+     */
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'course_student', 'user_id', 'course_id');
+    }
+
+
 }

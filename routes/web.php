@@ -20,3 +20,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::group(['middleware' => 'admin'], function(){
+    Route::resource('students', App\Http\Controllers\CourseController::class);
+    Route::resource('courses', App\Http\Controllers\CourseController::class);
+});
+
+Route::get('profile/{student}', [App\Http\Controllers\StudentController::class, 'view'])->name('student_profile');

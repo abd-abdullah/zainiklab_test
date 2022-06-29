@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +25,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $data['page_slug'] = 'dashboard';
+        if(auth()->user()->user_type == 'admin'){
+            $data['totalStudent'] = User::whereStatus(1)->where('user_type', 'student')->count();
+            $data['totalCourse'] = Course::whereStatus(1)->count();
+        }
+        else{
+            $data['totalEnrolledCourse'] = auth()->user()->courses->count();
+        }
+        return view('home', $data);
     }
 }
