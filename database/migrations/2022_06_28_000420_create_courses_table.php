@@ -16,7 +16,6 @@ class CreateCoursesTable extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('slug')->unique();
             $table->string('code', 100)->unique();
             $table->string('thumbnail');
             $table->decimal('price', 12, 2)->default(0);

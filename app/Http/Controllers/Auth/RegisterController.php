@@ -53,7 +53,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'first_name' => ['bail', 'required', 'string', 'max:191'],
             'last_name' => ['bail', 'required', 'string', 'max:191'],
-            'photo' => ['bail', 'required', 'mimes:jpg,jpeg,png,gif,webp', 'max:1000'],
+            'photo' => ['bail', 'required', 'mimes:jpg,jpeg,png,gif,webp', 'max:300'],
             'email' => ['bail', 'required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['bail', 'required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -77,6 +77,7 @@ class RegisterController extends Controller
         ]);
 
         $user->registration_no = formatId($user->id);
+        $user->save();
 
         return $user;
     }

@@ -6,13 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
 {
+    use CommonTrait;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'slug', 'code', 'thumbnail', 'price', 'status'
+        'name', 'code', 'thumbnail', 'price', 'status'
     ];
 
     /**

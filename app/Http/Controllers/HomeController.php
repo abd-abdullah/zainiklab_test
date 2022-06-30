@@ -9,13 +9,14 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
     /**
-     * Create a new controller instance.
+     * Display the specified resource.
      *
-     * @return void
+     * @return \Illuminate\Http\Response
      */
-    public function __construct()
+    public function welcome()
     {
-        $this->middleware('auth');
+        $data['courses'] = Course::whereStatus(1)->get();
+        return view('welcome', $data);
     }
 
     /**

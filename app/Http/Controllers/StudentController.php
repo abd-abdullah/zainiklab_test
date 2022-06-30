@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StudentRequest;
 use App\Models\User;
+use App\Repositories\StudentRepository;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -12,19 +14,13 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, StudentRepository $studentRepository)
     {
-        //
-    }
+        if ($request->wantsJson()) {
+            return $studentRepository->getDataTableData($request);
+        }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return view('students.index', ['page_slug' => 'student']);
     }
 
     /**
@@ -33,9 +29,9 @@ class StudentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StudentRequest $request, StudentRepository $studentRepository)
     {
-        //
+        $studentRepository->insertData($request);
     }
 
     /**
@@ -46,7 +42,11 @@ class StudentController extends Controller
      */
     public function show(User $student)
     {
-        //
+        //for eger loading
+        $student->courses;
+        $data['student'] = $student;
+        $data['page_slug'] = 'student';
+        return view('students.view', $data);
     }
 
     /**
@@ -57,7 +57,7 @@ class StudentController extends Controller
      */
     public function edit(User $student)
     {
-        //
+        return view('students.form', compact('student'));
     }
 
     /**
@@ -67,9 +67,9 @@ class StudentController extends Controller
      * @param  \App\Models\User $student
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $student)
+    public function update(StudentRequest $request, StudentRepository $studentRepository , User $student)
     {
-        //
+        $studentRepository->updateData($request, $student);
     }
 
     /**
@@ -80,6 +80,6 @@ class StudentController extends Controller
      */
     public function destroy(User $student)
     {
-        //
+        $student->delete();
     }
 }

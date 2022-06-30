@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, CommonTrait;
 
     /**
      * The attributes that are mass assignable.
