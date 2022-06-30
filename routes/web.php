@@ -21,6 +21,7 @@ Route::group(['middleware' => 'auth'], function(){
         Route::resource('students', App\Http\Controllers\StudentController::class);
         Route::resource('courses', App\Http\Controllers\CourseController::class);
         Route::post('courses/{course}/assign-student', [App\Http\Controllers\CourseController::class, 'assignStudent'])->name('assign_student');
+        Route::get('transactions', [App\Http\Controllers\TransactionController::class, 'index'])->name('transactions.index');
     });
 
     Route::post('payment', [App\Http\Controllers\PaymentController::class, 'payment'])->name('pay');

@@ -32,7 +32,7 @@ class PaymentController extends Controller
             return redirect()->route('welcome')->with('success', 'Already Purchase');
         }
         else if(auth()->user()->user_type == 'admin'){
-           // return redirect()->route('welcome')->with('success', 'You are admin');
+            return redirect()->route('welcome')->with('success', 'You are admin');
         }
 
         $transaction = Transaction::create([
