@@ -473,7 +473,7 @@
                                             @csrf
                                             <input type="hidden" name="payment_method" value="stripe">
                                             <input type="hidden" name="course_id" value="{{ $course->id }}">
-                                            <button type="button" class="btn btn-info">Buy with Stripe</button>
+                                            <button type="submit" class="btn btn-info">Buy with Stripe</button>
                                         </form>
                                     </div>
                                 </div>
