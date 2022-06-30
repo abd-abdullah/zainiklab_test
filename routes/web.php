@@ -22,6 +22,11 @@ Route::group(['middleware' => 'auth'], function(){
         Route::resource('courses', App\Http\Controllers\CourseController::class);
         Route::post('courses/{course}/assign-student', [App\Http\Controllers\CourseController::class, 'assignStudent'])->name('assign_student');
     });
+
+    Route::post('payment', [App\Http\Controllers\PaymentController::class, 'payment'])->name('pay');
+    Route::get('payment/success', [App\Http\Controllers\PaymentController::class, 'success'])->name('pay.success');
+    Route::get('payment/failed', [App\Http\Controllers\PaymentController::class, 'failed'])->name('pay.failed');
+    Route::get('payment/cancel', [App\Http\Controllers\PaymentController::class, 'cancel'])->name('pay.cancel');
     
     Route::get('profile/{student}', [App\Http\Controllers\StudentController::class, 'view'])->name('student_profile');
 });

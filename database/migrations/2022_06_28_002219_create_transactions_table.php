@@ -21,7 +21,7 @@ class CreateTransactionsTable extends Migration
             $table->string('transaction_id', 100);
             $table->string('payment_method', 100);
             $table->string('currency', 100);
-            $table->longText('payment_details');
+            $table->longText('payment_details')->nullable();
             $table->dateTime('payment_time');
             $table->string('status', 50);
             $table->timestamps();

@@ -430,6 +430,24 @@
                 <h1>Courses</h1>
             </div>
 
+            @if (session('error'))
+            <div class="card">
+                <div class="card-body">
+                    <div class="alert alert-danger" role="alert">
+                        {{ session('error') }}
+                    </div>
+                </div>
+            </div>
+            @elseif (session('success'))
+            <div class="card">
+                <div class="card-body">
+                    <div class="alert alert-success" role="alert">
+                        {{ session('success') }}
+                    </div>
+                </div>
+            </div>
+            @endif
+
             <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
                 <div class="row mx-2">
                     @forelse($courses as $course)
@@ -439,10 +457,26 @@
                                 <img src="{{ asset($course->thumbnail) }}" class="img-fluid w-100" alt="thumbnail">
                             </div>
                             <div class="card-body">
-                                <h3 class="card-title">{{ $course->name }}</h3>
+                                <h3 class="card-title">{!! $course->name .'-<span class="fs-5 text-muted">'.$course->code.'</span>' !!}</h3>
                                 <p class="card-text">Price : {{ $course->price }}</p>
-                                <a href="#" class="btn btn-primary">Buy with Paypal</a>
-                                <a href="#" class="btn btn-info">Buy with Stripe</a>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <form action="{{ route('pay') }}" method="post">
+                                            @csrf
+                                            <input type="hidden" name="payment_method" value="paypal">
+                                            <input type="hidden" name="course_id" value="{{ $course->id }}">
+                                            <button type="submit" class="btn btn-primary">Buy with Paypal</button>
+                                        </form>
+                                    </div>
+                                    <div class="col-lg-6 text-end">
+                                        <form action="{{ route('pay') }}" method="post">
+                                            @csrf
+                                            <input type="hidden" name="payment_method" value="stripe">
+                                            <input type="hidden" name="course_id" value="{{ $course->id }}">
+                                            <button type="button" class="btn btn-info">Buy with Stripe</button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
