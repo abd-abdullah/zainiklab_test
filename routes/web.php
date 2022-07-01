@@ -29,5 +29,5 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('payment/failed', [App\Http\Controllers\PaymentController::class, 'failed'])->name('pay.failed');
     Route::get('payment/cancel', [App\Http\Controllers\PaymentController::class, 'cancel'])->name('pay.cancel');
     
-    Route::get('profile/{student}', [App\Http\Controllers\StudentController::class, 'view'])->name('student_profile');
+    Route::get('profile/{student}', [App\Http\Controllers\StudentController::class, 'show'])->name('student_profile');
 });
